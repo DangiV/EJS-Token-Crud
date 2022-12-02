@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edit page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div>
+        <h3>welcome to edit page</h3>
+
+        <form method="POST" action="/edit/<% adminModel._id %>" onsubmit="event.preventDefault()">
+            <table>
+                <tr>
+                    <td>first name</td>
+                    <td><input type="text" name="fName" id="fName" value="<%= adminModel.fName %>"
+                            placeholder="enter fname">
+                        <span style="color: red;" id="ferror"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>last name</td>
+                    <td><input type="text" name="lName" id="lName" value="<%= adminModel.lName %>"
+                            placeholder="enter lname">
+                        <span id="lerror" style="color:red"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>password</td>
+                    <td><input type="password" name="password" id="password" placeholder="enter password">
+                        <span id="perror" style="color:red"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>confirm password</td>
+                    <td><input type="password" name="cpassword" id="cpassword" placeholder="enter confirm password">
+                        <span id="cpwd" style="color:red"></span>
+                    </td>
+                </tr>
+            </table>
+            <div>
+                <button type="submit" class="btn btn-success" style="margin-top: 10px;"
+                    onclick="updateData()">submit</button>
+            </div>
+        </form>
+        <span style="color: red;" id="pswee"></span>
+    </div>
+
+    <script>
+        function updateData() {
+
+//validation of first name
+
+            const ufnames = document.getElementById("fName").value;
+            const fregex = /[a-zA-Z]/
+
+            const regexf = /^[A-Za-z0-9\.]*$/
+
+            if (!regexf.test(ufnames)) {
+                document.getElementById("ferror").innerHTML = "empty space are not allowed";
+                return false;
+            }
+
+            if (ufnames == "") {
+                document.getElementById("ferror").innerHTML = "please enter first name";
+                return false;
+            }
+
+
+            if (!fregex.test(ufnames)) {
+                document.getElementById("ferror").innerHTML = "please enter character only";
+                return false;
+            }
+
+
+            if (ufnames.length <= 2) {
+                document.getElementById("ferror").innerHTML = "please enter more than two character"
+                return false;
+            }
+            if (ufnames.length > 15) {
+                document.getElementById("ferror").innerHTML = "please enter less than fifteen character"
+                return false;
+            }
+            else {
+                document.getElementById("ferror").innerHTML = ""
+            }
+
+
+//validation for last name 
+
+            const ulname = document.getElementById("lName").value;
+            const lregex = /[a-zA-Z]/
+
+            const regexl = /^[A-Za-z0-9\.]*$/
+
+            if (!regexl.test(ulname)) {
+                document.getElementById("lerror").innerHTML = "empty space are not allowed";
+                return false
+            }
+
+            if (ulname == "") {
+                document.getElementById("lerror").innerHTML = "please enter last name";
+                return false;
+            }
+
+            if (!lregex.test(ulname)) {
+                document.getElementById("lerror").innerHTML = "Please enter character only";
+                return false;
+            }
+
+            if (ulname.length <= 2) {
+                document.getElementById("lerror").innerHTML = "Please enter more than two character"
+                return false;
+            }
+            if (ulname.length > 15) {
+                document.getElementById("lerror").innerHTML = "Please enter less than fifteen character"
+                return false;
+            }
+            else {
+                document.getElementById("lerror").innerHTML = ""
+            }
+
+//validation for password
+
+            const pwd = document.getElementById("password").value
+
+            if (pwd == "") {
+                document.getElementById("perror").innerHTML = "Please provide password"
+                return false;
+            }
+            // console.log("pass", pwd.length)
+            if (pwd.length < 5) {
+                document.getElementById("perror").innerHTML = "Please provide manimum 5 digit "
+                return false;
+            }
+            if (pwd.length > 15) {
+                document.getElementById("perror").innerHTML = "Please provide less than 15 digit "
+                return false;
+            }
+            else {
+                document.getElementById("perror").innerHTML = ""
+            }
+
+
+//validation for confirm password
+
+            const cpswd = document.getElementById("cpassword").value
+            const pregex = /^[A-Za-z0-9\.]*$/;
+
+            if (!pregex.test(cpswd)) {
+                document.getElementById("cpwd").innerHTML = "empty space are not"
+                return false;
+
+            }
+
+            if (cpswd == "") {
+                document.getElementById("cpwd").innerHTML = "Please enter confirm password"
+                return false;
+            }
+            else {
+                document.getElementById("cpwd").innerHTML = ""
+            }
+
+//cross checking password and confirm password
+
+            const psd1 = document.getElementById("password").value
+            const psd2 = document.getElementById("cpassword").value
+
+            if (psd1 != psd2) {
+                document.getElementById("pswee").innerHTML = "Please enter password and confirm password same"
+                return false;
+            }
+
+//connected to bakend to store or update of details of user
+  
+
+            let id =window.location.href;
+            let arr=id.split("/").pop();
+            console.log("idddddddd123",arr)
+             const userUpdate = new XMLHttpRequest
+             const params = "fName=" + fName.value + "&lName=" + lName.value + "&password=" + password.value + "&id="+ arr
+             userUpdate.open("POST",'/edit/:id',true)
+             userUpdate.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+             userUpdate.send(params);
+             userUpdate.onload  = function () {
+             if(userUpdate.readyState == 4  && userUpdate.status == 200){
+                alert("updated successfully ")
+                 window.location.href = '/alluser'
+             }
+             else{
+                alert("something went wrong")
+             }
+            }
+       
+       }
+    </script>
+
+</body>
+
+</html>

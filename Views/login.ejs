@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+   
+    <style>
+      body{
+        padding-top: 50px;
+
+          }
+    </style>
+</head>
+<body>
+  <div >
+    <h3>welcome to login page</h3>
+
+    <form onsubmit="event.preventDefault()">
+      <table>      
+       <tr>
+           <td>email</td>
+            <td><input type="email" name="email" id="email" placeholder="enter email">
+            <span style="color: red;" id="errore"></span></td>
+       </tr>
+
+       <tr>
+           <td>password</td>
+            <td><input type="password" name="password" id="password" placeholder="enter password">
+            <span style="color: red;" id="pwderr"></span></td>
+       </tr>
+      </table>
+      <div>
+        <button style="margin-top: 30px" class="btn btn-success" onclick="getData()" type="submit">login</button>
+        <span style="color: red;" id="mainerror"></span>
+    </div>
+  </form>
+  <div>
+    <span>don't have account</span>
+    <a href="/register" style="margin-top: 20px" class=" btn btn-warning" type="button" >register here</a>
+    <a href="/" style="margin-top: 20px" class=" btn btn-danger" type="button" >home</a>
+  </div>
+</div>
+    <script>
+            function getData(){
+//validation for email 
+              const lemail = document.getElementById("email").value
+              if(lemail == ""){
+               document.getElementById("errore").innerHTML = "please enter email"
+              }
+              else{
+                document.getElementById("errore").innerHTML = ""
+              }
+
+//validation for password
+               
+              const pwd = document.getElementById("password").value
+              if(pwd == ""){
+                document.getElementById("pwderr").innerHTML = "please enter password"
+              }
+              else{
+                document.getElementById("pwderr").innerHTML = ""
+
+              }
+
+//connect to database to get details of user for login
+              const userLogin = new XMLHttpRequest();
+              // const params = "email="+email.value+"&password="+password.value 
+              const params = "email="+email.value+"&password="+password.value
+
+//console.log(params);
+
+              userLogin.open("POST", "/login",true)
+              userLogin.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+              userLogin.send(params)
+
+              userLogin.onreadystatechange = function () {
+                if(this.status == 400){
+                  document.getElementById("mainerror").innerHTML = "please provide valid email and password"
+                }
+                if(userLogin.readyState == 4 && userLogin.status == 200)
+                {
+                  alert("login successfully");
+                 // window.location.href="/alluser"
+                }
+              }
+            }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+
+<body>
+    <h4>welcome to user page</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">s.no</th>       
+                <th scope="col">first name</th>
+                <th scope="col">last name</th>
+                <th scope="col">email</th>
+                <th scope="col">section</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% udata.map((show,index)=>{ %>
+                <tr>
+                    <th scope="col">
+                        <%= index + 1 %>
+                    </th>
+                    <th scope="col">
+                        <%= show.fName%>
+                    </th>
+                    <th scope="col">
+                        <%= show.lName%>
+                    </th>
+                    <th scope="col">
+                        <%= show.email%>
+                    </th>
+                    <td>
+                        <a href="/edit/<%= show._id%>" class="btn btn-border-shadow update"> 
+                            <span class="text-gradient">edit</span>
+                        </a>
+                        <a href="/delete/<%= show.id%>" class="btn btn-border-shadow update"> 
+                            <span class="text-gradient" onclick="return confirmDelte()">delete</span>
+                        </a>
+                    </td> 
+                </tr>
+                <% }) %>
+        </tbody>
+    </table>
+
+
+<div>
+    <a href="/" class="btn btn-border-shadow update btn btn-danger" type="button">log out</span>
+    </a>
+</div>
+    <script>
+     
+     function confirmDelte(){
+        const box = confirm("Are you sure you want to delete!!!")
+        if(box == true){
+              alert("Data deleted successfully");
+              window.localtion.href='/'
+              //return false;
+        }                
+        else{
+            window.location.href='/alluser'
+            return false
+        }
+     }
+    </script>
+</body>
+
+</html>
