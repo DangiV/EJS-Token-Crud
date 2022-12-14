@@ -1,11 +1,13 @@
 import { createToken } from "../auth.js";
 import adminModel from "../Model/adminModel.js";
+import bcrypt from 'bcrypt'
 
 
 //User Register controllwer 
 
     export const Register = async (req,res) => {
         const {fName, lName, email, password} = req.body
+        //const hashPassword = await bcrypt.hash(req.body.password, 10)
 
 
         try {
@@ -25,10 +27,14 @@ import adminModel from "../Model/adminModel.js";
 //User Login controller 
 
     export const Login = async (req,res) =>{
+       
+          res.cookie("username","rahul")
         const {email , password} = req.body
         
         try {
+           // const password = await bcrypt.compare(password,  valid.password)
             const valid = await adminModel.findOne({email : email , password: password})
+
             if(valid){
                 createToken(valid.id)
                 res.status(200).json("User Login successfully")

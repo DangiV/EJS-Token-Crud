@@ -2,7 +2,7 @@ import jsonwebtoken from 'jsonwebtoken'
 
 export const createToken = (id) =>{
     const token= jsonwebtoken.sign(id.toString(),process.env.SECRETE_KEY)
-    console.log("Your login token is = "+token);
+    // console.log("Your login token is = "+token);
     return token;
 }
 
